@@ -7,6 +7,6 @@ int main() {
     tree.find(48);
     tree.insert(29);
     std::cout << tree;
-    file << tree;
+  //  file << tree;
     
 }
