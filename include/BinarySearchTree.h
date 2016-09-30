@@ -62,6 +62,19 @@ public:
     auto operator = (BinarySearchTree<T>&& tree) -> BinarySearchTree<T>&;      //перемещение
     auto operator == (const BinarySearchTree& tree) -> bool;
 
+    auto compare(Node& node_)-> bool{
+        if (value_==node_.value_){
+            if(left_ && node_.left_){
+                if(left_->compare(*node_.left_)==false)
+                    return false;
+            }else if(left_ || node_.left_)return false;
+            if(right_ && node_.right_){
+                if (right_->compare(*node_.right_) == false) return false;
+            }else if(right_ || node_.right_)return false;
+            return true;
+        }else return false;
+    }
+
     friend auto operator >> (std::istream& in, BinarySearchTree<T>& tree) -> std::istream&;
     friend auto operator << (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&;
     friend auto operator >>  (std::ifstream& in, BinarySearchTree<T>& tree) -> std::ifstream&;
@@ -173,6 +186,13 @@ BinarySearchTree<T>::~BinarySearchTree() {
     }
 }
 
+template <typename T>
+bool operator == (const BinarySearchTree<T> & tree){
+    if (this == &tree) return true;
+
+    return compare(root_,tree.root_);
+}
+
 template<typename T>
 auto BinarySearchTree<T>::operator=(const BinarySearchTree<T> & tree) -> BinarySearchTree<T>&{
     if (this == &tree)
@@ -196,7 +216,5 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearch
 
     return *this;
 }
-
-
 
 #endif //MAIN_BINARYSEARCHTREE_H
