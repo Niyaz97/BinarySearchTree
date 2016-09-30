@@ -1,3 +1,4 @@
+#include "../include/BinarySearchTree.h"
 #include "catch.hpp"
 SCENARIO("size off empty tree must be equal"){
   GIVEN("emptytree"){
