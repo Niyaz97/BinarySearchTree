@@ -45,7 +45,7 @@ public:
 
         rvalue.root_ = nullptr;
     }
-        
+
     BinarySearchTree(const BinarySearchTree& tree){
         size_=tree.size_;
 
@@ -175,6 +175,8 @@ BinarySearchTree<T>::~BinarySearchTree() {
 
 template<typename T>
 auto BinarySearchTree<T>::operator=(const BinarySearchTree<T> & tree) -> BinarySearchTree<T>&{
+    if (this == &tree)
+        return *this;
     delete root_;
     this->root_=tree.root_->copy();
     this->size_=tree.size_;
@@ -183,6 +185,9 @@ auto BinarySearchTree<T>::operator=(const BinarySearchTree<T> & tree) -> BinaryS
 
 template <typename T>
 auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearchTree<T>&{
+
+    if (this == &tree)
+        return *this;
     delete root_;
     this->size_= tree.size_;
     this->root_ = tree.root_;
