@@ -33,6 +33,8 @@ public:
         }
     };
 
+
+
     Node* root_;
     size_t size_;
 
@@ -42,7 +44,6 @@ public:
         size_ = rvalue.size_;
         root_ = rvalue.root_;
 
-
         rvalue.root_ = nullptr;
     }
 
@@ -51,29 +52,23 @@ public:
 
         root_=tree.root_->copy();
     }
+
+    Node* ReturnRoot() const noexcept {return root_;}
+    ~BinarySearchTree();
+
     auto size() const noexcept -> size_t;
     auto insert(const T& value) noexcept -> bool;
     auto find(const T& value) const noexcept -> const T*;
-    Node* ReturnRoot() const noexcept {return root_;}
-    ~BinarySearchTree();
+
+
     void direct(Node* node, std::ostream& out) const ;
     void symmetric(Node* root, std::ostream& out) const;
+    auto equal(Node *firstNode, Node *secondTree) const -> bool;
+
     auto operator = (const BinarySearchTree<T>& tree) -> BinarySearchTree<T>&; //копирование
     auto operator = (BinarySearchTree<T>&& tree) -> BinarySearchTree<T>&;      //перемещение
     auto operator == (const BinarySearchTree& tree) -> bool;
 
-    auto compare(Node& node_)-> bool{
-        if (value_==node_.value_){
-            if(left_ && node_.left_){
-                if(left_->compare(*node_.left_)==false)
-                    return false;
-            }else if(left_ || node_.left_)return false;
-            if(right_ && node_.right_){
-                if (right_->compare(*node_.right_) == false) return false;
-            }else if(right_ || node_.right_)return false;
-            return true;
-        }else return false;
-    }
 
     friend auto operator >> (std::istream& in, BinarySearchTree<T>& tree) -> std::istream&;
     friend auto operator << (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&;
@@ -159,13 +154,13 @@ void BinarySearchTree<T>::symmetric(Node* node, std::ostream& out) const
 
 template<typename T>
 std::ostream& operator << (std::ostream& out, const BinarySearchTree<T>& tree) {
-    tree.symmetric(out, tree.ReturnRoot());
+    tree.symmetric(tree.ReturnRoot(), out);
     return out;
 }
 
 template<typename T>
 std::ofstream& operator << (std::ofstream& fileout, const BinarySearchTree<T>& tree) {
-    tree.direct(fileout, tree.ReturnRoot());
+    tree.direct(tree.ReturnRoot(), fileout);
     return fileout;
 }
 
@@ -186,11 +181,14 @@ BinarySearchTree<T>::~BinarySearchTree() {
     }
 }
 
-template <typename T>
-bool operator == (const BinarySearchTree<T> & tree){
-    if (this == &tree) return true;
-
-    return compare(root_,tree.root_);
+template<typename T>
+auto BinarySearchTree<T>::equal(Node *fNode, Node *sNode) const -> bool
+{
+    if (fNode)
+        return sNode && fNode->value_ == sNode->value_
+               && equal(fNode->left_, sNode->left_) && equal(fNode->right_, sNode->right_);
+    else
+        return !sNode;
 }
 
 template<typename T>
