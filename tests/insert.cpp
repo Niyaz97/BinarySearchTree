@@ -1,4 +1,4 @@
-#include "../include/BinarySearchTree.h"
+#include "../include/BinarySearchTree.hpp"
 #include "catch.hpp"
 
 SCENARIO("if element already exists => return false")
