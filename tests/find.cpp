@@ -1,4 +1,4 @@
-#include "../include/BinarySearchTree.h"
+#include "../include/BinarySearchTree.hpp"
 #include "catch.h"
 
 SCENARIO("if element exists in tree, return pointer to this element") 
