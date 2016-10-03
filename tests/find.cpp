@@ -1,29 +1,29 @@
 #include "../include/BinarySearchTree.h"
 #include "catch.h"
 
-SCENARIO("if element is in tree, find method must return it's pointer") 
+SCENARIO("if element exists in tree, return pointer to this element") 
 {
     GIVEN("tree") 
     {
-        BinarySearchTree<int> tree{1, 4, 5};
+        BinarySearchTree<int> tree{1, 3, 5};
         WHEN("find") 
         {
-            THEN("return pointer to element must not be nullptr") 
+            THEN("return poinet to this element") 
             {
-                REQUIRE(*(tree.find(4)) == 4);
+                REQUIRE(*(tree.find(3)) == 3);
             }
         }
     }
 }
 
-SCENARIO("if element is not in tree, find method must return nullptr") 
+SCENARIO("if element doesn't exist in tree, return nullptr") 
 {
     GIVEN("tree") 
     {
-        BinarySearchTree<int> tree{1, 4, 5};
+        BinarySearchTree<int> tree{1, 3, 5};
         WHEN("find") 
         {
-            THEN("return pointer to element must be nullptr") 
+            THEN("return nullptr") 
             {
                 REQUIRE(tree.find(2) == nullptr);
             }
@@ -35,13 +35,14 @@ SCENARIO("find method must work for constant tree and non-constant tree")
 {
     GIVEN("constant and non-constant tree") 
     {
-        const BinarySearchTree<int> tree1{1, -2, 0};
-        BinarySearchTree<int> tree2{1, 4, 5};
+        const BinarySearchTree<int> tree1{4, 5, 6};
+        BinarySearchTree<int> tree2{7, 8, 9};
         WHEN("find") 
         {
             THEN("return element for constant and non-constant tree") 
             {
-                REQUIRE(tree1.find(-2) && tree2.find(1));
+                REQUIRE(tree1.find(4));
+                REQUIRE(tree2.find(9));
             }
         }
     }
