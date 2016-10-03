@@ -1,66 +1,94 @@
-SCENARIO("if element is (or not) in tree, insert method must return false (or true)") 
+#include "../include/BinarySearchTree.h"
+#include "catch.hpp"
+
+SCENARIO("if element already exists => return false")
 {
-    GIVEN("tree")
+    GIVEN("some tree")
     {
-        BinarySearchTree<int> tree{1, 3, 5, -1};
+        BinarySearchTree<int> tree{1, 3, 5, 7};
         WHEN("insert element")
         {
-            THEN("sizes must be equal")
+            THEN("elements can't be repeated")
             {
                 REQUIRE(!tree.insert(1));
-                REQUIRE(tree.insert(0));
             }
-        }
-    }
+        }   
+    }    
 }
-
-SCENARIO("if inserted value is lesser (or bigger) than the value of root, inserted value must be inserted on the left (or right) from root") 
+SCENARIO("if element don't exists => return true")
 {
-    GIVEN("four trees")
+    GIVEN("some tree")
     {
-        BinarySearchTree<int> tree1{1, 3, -1};
-        BinarySearchTree<int> tree2{1, 3};
-        BinarySearchTree<int> tree3{1, 2, 5};
-        BinarySearchTree<int> tree4{1, 2};
-        WHEN("insert value that is lesser than the root value")
-        {
-            tree2.insert(-1);
-            THEN("value must be inserted on the left from the root")
-            {
-                REQUIRE(tree1 == tree2);
-            }
-        }
+        BinarySearchTree<int> tree{1, 3, 5, 7};
         WHEN("insert element")
         {
-            tree4.insert(-1);
-            THEN("value must be inserted on the right from the root")
+            THEN("element was inserted")
             {
-                REQUIRE(tree3 == tree4);
+                REQUIRE(tree.insert(10));
+            }
+        }   
+    }    
+}
+SCENARIO("if inserting element < root->value, add it to the left side of root")
+{
+    GIVEN("some tree")
+    {
+        BinarySearchTree<int> tree{3, 5};
+        BinarySearchTree<int> tree2{3, 1, 5};
+        WHEN("insert element")
+        {
+            tree.insert(1);
+            THEN("element must be in the root->left")
+            {
+                REQUIRE(tree == tree2);
+            }
+        }
+    }   
+}
+SCENARIO("if inserting element > root->value, add it to the right side of root")
+{
+    GIVEN("some tree")
+    {
+        BinarySearchTree<int> tree{3, 1};
+        BinarySearchTree<int> tree2{3, 1, 5};
+        WHEN("insert element")
+        {
+            tree.insert(5);
+            THEN("element must be in the root->right")
+            {
+               REQUIRE(tree == tree2);
+            }
+        }
+    }   
+}
+SCENARIO("if element already exists, size must stay constant")
+{
+    GIVEN("some tree")
+    {
+        BinarySearchTree<int> tree{1, 3, 5, 7};
+        size_t size = tree.size();
+        WHEN("insert element")
+        {
+            tree.insert(7);
+            THEN("size hasn't changed")
+            {
+                REQUIRE(tree.size() == size);
             }
         }
     }
 }
-
-SCENARIO("if element is (or not) in tree, size must increase by one (or not change)") 
+SCENARIO("if element doesn't exist, size must increase")
 {
-    GIVEN("tree, its size")
+    GIVEN("some tree")
     {
-        BinarySearchTree<int> tree{1, 3, 5, -1};
+        BinarySearchTree<int> tree{1, 3, 5, 7};
         size_t size = tree.size();
-        WHEN("insert element that is not in the tree")
+        WHEN("insert element")
         {
-            tree.insert(2);
-            THEN("sizes must increase by one")
+            tree.insert(8);
+            THEN("newSize == sizeBeforeInserting + 1")
             {
                 REQUIRE(tree.size() == size + 1);
-            }
-        }
-        WHEN("insert element that is in the tree")
-        {
-            tree.insert(3);
-            THEN("sizes must be equal")
-            {
-                REQUIRE(tree.size() == size);
             }
         }
     }
