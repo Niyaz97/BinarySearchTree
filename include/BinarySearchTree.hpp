@@ -1,5 +1,5 @@
-#ifndef MAIN_BINARYSEARCHTREE_H
-#define MAIN_BINARYSEARCHTREE_H
+#ifndef MAIN_BINARYSEARCHTREE_HPP
+#define MAIN_BINARYSEARCHTREE_HPP
 
 
 #include <iostream>
@@ -231,4 +231,4 @@ auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool
     return equal(root_, tree.root_);
 }
 
-#endif //MAIN_BINARYSEARCHTREE_H
+#endif //MAIN_BINARYSEARCHTREE_HPP
