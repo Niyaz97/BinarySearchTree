@@ -1,5 +1,5 @@
 #include "../include/BinarySearchTree.hpp"
-#include "catch.h"
+#include "catch.hpp"
 
 SCENARIO("if element exists in tree, return pointer to this element") 
 {
