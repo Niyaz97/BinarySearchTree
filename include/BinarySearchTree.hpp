@@ -5,6 +5,14 @@
 #include <iostream>
 #include <fstream>
 
+template <typename T>
+class BinarySearchTree;
+
+template <typename T> auto operator >> (std::istream& input, BinarySearchTree<T>& tree) -> std::istream;
+template <typename T> auto operator << (std::ofstream& fileout, const BinarySearchTree<T>& tree) -> std::ofstream&;
+template <typename T> auto operator >> (std::ifstream& in, BinarySearchTree<T>& tree) -> std::ifstream&;
+template <typename T> auto operator << (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&;
+
 
 template <typename T>
 class BinarySearchTree {
@@ -69,11 +77,10 @@ public:
     auto operator = (BinarySearchTree<T>&& tree) -> BinarySearchTree<T>&;      //перемещение
     auto operator == (const BinarySearchTree& tree) -> bool;
 
-
-    friend auto operator >> (std::istream& in, BinarySearchTree<T>& tree) -> std::istream&;
-    friend auto operator << (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&;
-    friend auto operator >>  (std::ifstream& in, BinarySearchTree<T>& tree) -> std::ifstream&;
-    friend auto operator <<  (std::ofstream& out, const BinarySearchTree<T>& tree) -> std::ofstream&;
+    friend auto operator >> <> (std::istream& input, BinarySearchTree<T>& tree) -> std::istream;
+    friend auto operator << <> (std::ofstream& fileout, const BinarySearchTree<T>& tree) -> std::ofstream&;
+    friend auto operator >> <> (std::ifstream& in, BinarySearchTree<T>& tree) -> std::ifstream&;
+    friend auto operator << <> (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&;
 
 };
 
