@@ -1,5 +1,5 @@
-#ifndef MAIN_BINARYSEARCHTREE_HPP
-#define MAIN_BINARYSEARCHTREE_HPP
+#ifndef MAIN_BINARYSEARCHTREE_H
+#define MAIN_BINARYSEARCHTREE_H
 
 
 #include <iostream>
@@ -222,13 +222,13 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearch
     return *this;
 }
 
-template <typename T>
-auto BinarySearchTree<T>::operator==(const BinarySearchTree &tree) -> bool
+template<typename T>
+auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool
 {
-    if (root_->equal(tree.root))
+    if (this == &tree)
         return true;
-    else
-        return false;
+
+    return equal(root_, tree.root_);
 }
 
-#endif //MAIN_BINARYSEARCHTREE_HPP
+#endif //MAIN_BINARYSEARCHTREE_H
