@@ -75,7 +75,7 @@ public:
 
     auto operator = (const BinarySearchTree<T>& tree) -> BinarySearchTree<T>&; //копирование
     auto operator = (BinarySearchTree<T>&& tree) -> BinarySearchTree<T>&;      //перемещение
-    auto operator == (const BinarySearchTree& tree) -> bool;
+ //   auto operator == (const BinarySearchTree& tree) -> bool;
 
     friend auto operator >> <> (std::istream& input, BinarySearchTree<T>& tree) -> std::istream;
     friend auto operator << <> (std::ofstream& fileout, const BinarySearchTree<T>& tree) -> std::ofstream&;
