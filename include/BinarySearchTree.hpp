@@ -75,7 +75,7 @@ public:
 
     auto operator = (const BinarySearchTree<T>& tree) -> BinarySearchTree<T>&; //копирование
     auto operator = (BinarySearchTree<T>&& tree) -> BinarySearchTree<T>&;      //перемещение
- //   auto operator == (const BinarySearchTree& tree) -> bool;
+    auto operator == (const BinarySearchTree& tree) -> bool;
 
     friend auto operator >> <> (std::istream& input, BinarySearchTree<T>& tree) -> std::istream;
     friend auto operator << <> (std::ofstream& fileout, const BinarySearchTree<T>& tree) -> std::ofstream&;
@@ -220,6 +220,15 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearch
     tree.root_= nullptr;
 
     return *this;
+}
+
+template <typename T>
+auto BinarySearchTree<T>::operator==(const BinarySearchTree &tree) -> bool
+{
+    if (root_->equal(tree.root))
+        return true;
+    else
+        return false;
 }
 
 #endif //MAIN_BINARYSEARCHTREE_HPP
