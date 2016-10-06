@@ -222,4 +222,4 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearch
     return *this;
 }
 
-#endif //MAIN_BINARYSEARCHTREE_H
+#endif //MAIN_BINARYSEARCHTREE_HPP
