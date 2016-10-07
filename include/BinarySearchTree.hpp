@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <fstream>
-
+#include <memory>
 template <typename T>
 class BinarySearchTree;
 
@@ -19,20 +19,20 @@ class BinarySearchTree {
 public:
     class Node{
     public:
+        std::shared_ptr<Node> left_;
+        std::shared_ptr<Node> right_;
+        std::shared_ptr<Node> parent_;
         T value_;
-        Node* left_;
-        Node* right_;
-        Node(T value) : value_(value), left_(nullptr), right_(nullptr){}
-
+        Node() :  left_(nullptr), right_(nullptr), parent_(nullptr){}
+        Node(T value) : value_(value), left_(nullptr), right_(nullptr), parent_(nullptr){}
+        Node(T value,std::shared_ptr<Node> Parent) : value_(value), left_(nullptr), right_(nullptr), parent_(Parent){}
         ~Node(){
-            if(left_)
-                delete left_;
-            if(right_)
-                delete right_;
+           left_= nullptr;
+           right_= nullptr;
         }
 
-        auto copy() -> Node*{
-            auto nNode = new Node(value_);
+        std::shared_ptr<Node> copy(){
+            std::shared_ptr<Node> nNode=std::make_shared<Node>(value_);
             if(left_)
                 nNode->left_=left_->copy();
             if(right_)
@@ -42,9 +42,8 @@ public:
     };
 
 
-
-    Node* root_;
     size_t size_;
+    std::shared_ptr<Node> root_;
 
     BinarySearchTree() : root_(nullptr), size_(0){};
     BinarySearchTree(const std::initializer_list<T>& list);
@@ -61,17 +60,17 @@ public:
         root_=tree.root_->copy();
     }
 
-    Node* ReturnRoot() const noexcept {return root_;}
+    std::shared_ptr<Node> ReturnRoot() const noexcept {return root_;}
     ~BinarySearchTree();
 
     auto size() const noexcept -> size_t;
     auto insert(const T& value) noexcept -> bool;
-    auto find(const T& value) const noexcept -> const T*;
+    auto find(const T& value) const noexcept -> const std::shared_ptr<T>;
+    auto remove(const T& value) noexcept ->bool;
 
-
-    void direct(Node* node, std::ostream& out) const ;
-    void symmetric(Node* root, std::ostream& out) const;
-    auto equal(Node *firstNode, Node *secondTree) const -> bool;
+    void direct(std::shared_ptr<Node> root, std::ostream& out) const ;
+    void symmetric(std::shared_ptr<Node> root, std::ostream& out) const;
+    auto equal(std::shared_ptr<Node> firstTree, std::shared_ptr<Node> secondTree) const -> bool;
 
     auto operator = (const BinarySearchTree<T>& tree) -> BinarySearchTree<T>&; //копирование
     auto operator = (BinarySearchTree<T>&& tree) -> BinarySearchTree<T>&;      //перемещение
@@ -81,6 +80,65 @@ public:
     friend auto operator << <> (std::ofstream& fileout, const BinarySearchTree<T>& tree) -> std::ofstream&;
     friend auto operator >> <> (std::ifstream& in, BinarySearchTree<T>& tree) -> std::ifstream&;
     friend auto operator << <> (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&;
+
+    void Remove(std::shared_ptr<Node> node, int value)
+    {
+
+        if (node == nullptr)
+            return;
+
+        if (value < node->value_)
+            return Remove(node->left_, value);
+        else if (value > node->value_)
+            return Remove(node->right_, value);
+        else  {
+            if (node->left_ == nullptr && node->right_ == nullptr) {
+                if (node->parent_->left_ == node)
+                    node->parent_->left_ = nullptr;
+                else
+                    node->parent_->right_ = nullptr;
+                node=nullptr;
+            }
+            else {
+                std::shared_ptr<Node> newnode=nullptr;//
+                if (node->left_ != nullptr) {
+                    newnode = Rightmost(node->left_);
+                }
+                else
+                    newnode = Leftmost(node->right_);
+
+                if (node->parent_->left_ == node){
+
+                    newnode->right_ = node->right_;
+                    node->parent_->left_ = newnode;
+
+                }
+                else{
+                    newnode->left_ = node->left_;
+                    node->parent_->right_ = newnode;
+                }
+
+                node=nullptr;
+
+            }
+        }
+    }
+    std::shared_ptr<Node> Leftmost(std::shared_ptr<Node> node) {
+        if (node == nullptr)
+            return nullptr;
+        if (node->left_ != nullptr) {
+            return Leftmost(node->left_);
+        }
+        return node;
+    }
+    std::shared_ptr<Node> Rightmost(std::shared_ptr<Node> node) {
+        if (node == nullptr)
+            return nullptr;
+        if (node->right_ != nullptr) {
+            return Rightmost(node->right_);
+        }
+        return node;
+    }
 
 };
 
@@ -96,15 +154,15 @@ auto BinarySearchTree<T>::size() const noexcept -> size_t {
 
 template<typename T>
 auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool{
-
+//    std::shared_ptr<Node> node(root_);
+//    std::shared_ptr<Node> my_node(nullptr);
     if (root_== nullptr) {
-        root_ = new Node(value);
+        root_ = std::make_shared<Node>(value);
         size_++;
         return true;
     }
 
-    Node* node = root_, *parent = nullptr;
-
+    std::shared_ptr<Node> node=root_, parent=nullptr;
     while(node){
         parent=node;
         if (value < parent->value_)
@@ -116,30 +174,31 @@ auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool{
     }
 
     if (value < parent->value_)
-        parent->left_ = new Node(value);
-    else parent->right_ = new Node(value);
+        parent->left_ = std::make_shared<Node>(value,parent);
+    else
+        parent->right_ = std::make_shared<Node>(value,parent);
     size_ ++;
     return true;
 
 }
 
 template<typename T>
-auto BinarySearchTree<T>::find(const T& value) const noexcept -> const T*{
-    Node* node=root_;
+auto BinarySearchTree<T>::find(const T& value) const noexcept -> const std::shared_ptr<T>{
+    auto node=root_;
     while(node){
         if(value< node->value_)
             node = node->left_;
         else if (value> node->value_)
             node = node->right_;
         else
-            return &node->value_;
+            return std::make_shared<T>(node->value_);
 
     }
     return nullptr;
 }
 
 template<typename T>
-void BinarySearchTree<T>::direct(Node* node, std::ostream& out) const{
+void BinarySearchTree<T>::direct(const std::shared_ptr<Node> node, std::ostream& out) const{
     if(!node)
         return;
     out << node->value_<<" ";
@@ -149,7 +208,7 @@ void BinarySearchTree<T>::direct(Node* node, std::ostream& out) const{
 
 
 template<typename T>
-void BinarySearchTree<T>::symmetric(Node* node, std::ostream& out) const
+void BinarySearchTree<T>::symmetric(const std::shared_ptr<Node> node, std::ostream& out) const
 {
     if (!node)
         return;
@@ -161,7 +220,8 @@ void BinarySearchTree<T>::symmetric(Node* node, std::ostream& out) const
 
 template<typename T>
 std::ostream& operator << (std::ostream& out, const BinarySearchTree<T>& tree) {
-    tree.symmetric(tree.ReturnRoot(), out);
+    //tree.symmetric(tree.ReturnRoot(), out);
+    tree.direct(tree.ReturnRoot(), out);
     return out;
 }
 
@@ -183,14 +243,13 @@ std::istream& operator >> (std::istream& input, BinarySearchTree<T>& tree) {
 template<typename T>
 BinarySearchTree<T>::~BinarySearchTree() {
     if (root_){
-        delete root_;
+        root_= nullptr;
         size_ = 0;
     }
 }
 
 template<typename T>
-auto BinarySearchTree<T>::equal(Node *fNode, Node *sNode) const -> bool
-{
+auto BinarySearchTree<T>::equal(const std::shared_ptr<Node> fNode, const std::shared_ptr<Node> sNode) const -> bool{
     if (fNode)
         return sNode && fNode->value_ == sNode->value_
                && equal(fNode->left_, sNode->left_) && equal(fNode->right_, sNode->right_);
@@ -223,12 +282,14 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearch
 }
 
 template<typename T>
-auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool
-{
+auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool{
     if (this == &tree)
         return true;
 
     return equal(root_, tree.root_);
 }
+
+
+
 
 #endif //MAIN_BINARYSEARCHTREE_HPP
