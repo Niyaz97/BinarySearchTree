@@ -4,6 +4,7 @@
   SCENARIO("the tree size must decrease by one after removing element")
   {
       GIVEN("two trees")
+      {
            BinarySearchTree<int> bst1{ 10,15,14,16,20,25,7};
            BinarySearchTree<int> bst2{ 10,15,14,16,20,25,};
            
