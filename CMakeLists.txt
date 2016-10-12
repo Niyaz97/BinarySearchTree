@@ -6,4 +6,4 @@ include_directories(include)
 
 set(SOURCE_FILES examples/main.cpp)
 add_executable(BinarySearchTree ${SOURCE_FILES})
-add_executable(Tests ${TESTS_SOURCE} tests/size.cpp tests/insert.cpp tests/find.cpp tests/main.cpp tests/remove.cpp)
+add_executable(Tests ${TESTS_SOURCE} tests/catch.hpp tests/size.cpp tests/insert.cpp tests/find.cpp tests/main.cpp tests/remove.cpp)
