@@ -81,16 +81,16 @@ public:
     friend auto operator >> <> (std::ifstream& in, BinarySearchTree<T>& tree) -> std::ifstream&;
     friend auto operator << <> (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&;
 
-    void Remove(std::shared_ptr<Node> node, int value)
+    void remove(std::shared_ptr<Node> node, int value)
     {
 
         if (node == nullptr)
             return;
 
         if (value < node->value_)
-            return Remove(node->left_, value);
+            return remove(node->left_, value);
         else if (value > node->value_)
-            return Remove(node->right_, value);
+            return remove(node->right_, value);
         else  {
             if (node->left_ == nullptr && node->right_ == nullptr) {
                 if (node->parent_->left_ == node)
