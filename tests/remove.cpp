@@ -50,23 +50,22 @@
                 }
              }
              
-             
-            bst1 = BinarySearchTree<int> ({ 10});
-            bst2 = BinarySearchTree<int> ();
-             WHEN("remove root")
-            {
-              bst1.remove(10);
-              THEN("trees must be equal")
-                {
-                  REQUIRE(bst1==bst2);
-                }
-             }
-             
             bst1 = BinarySearchTree<int> ({ 10,15,14,16,20,25,7,17,30});
             bst2 = BinarySearchTree<int> ({ 10,15,14,16,20,25,7,17,30});
              WHEN("remove node that doesn't exist")
             {
               bst1.remove(6);
+              THEN("trees must be equal")
+                {
+                  REQUIRE(bst1==bst2);
+                }
+             }
+        
+            bst1 = BinarySearchTree<int> ({ 10});
+            bst2 = BinarySearchTree<int> ();
+             WHEN("remove root")
+            {
+              bst1.remove(10);
               THEN("trees must be equal")
                 {
                   REQUIRE(bst1==bst2);
