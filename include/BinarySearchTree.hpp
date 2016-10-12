@@ -261,7 +261,7 @@ template<typename T>
 auto BinarySearchTree<T>::operator=(const BinarySearchTree<T> & tree) -> BinarySearchTree<T>&{
     if (this == &tree)
         return *this;
-    delete root_;
+    root_=nullptr;
     this->root_=tree.root_->copy();
     this->size_=tree.size_;
     return *this;
@@ -272,7 +272,7 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearch
 
     if (this == &tree)
         return *this;
-    delete root_;
+    root_=nullptr;
     this->size_= tree.size_;
     this->root_ = tree.root_;
     tree.size_ = 0;
