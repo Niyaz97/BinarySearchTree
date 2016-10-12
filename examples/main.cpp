@@ -8,7 +8,7 @@ int main() {
     BinarySearchTree<int> treedel{100,250,400,50,150,600};
    // std::cout << tree1;
 
-    treedel.Remove(treedel.root_,600);
+    treedel.remove(treedel.root_,600);
     std::cout<<treedel;
 
 //    std::ofstream file("/ClionProjects/untitled/Test1.txt");
