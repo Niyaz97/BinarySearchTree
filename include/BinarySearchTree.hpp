@@ -76,16 +76,16 @@ public:
 
     auto find(const T &value) const noexcept -> const std::shared_ptr<T>;
 
-    auto del(const T &value) noexcept -> bool;
+    auto remove(const T &value) noexcept -> bool;
 
-    auto remove(std::shared_ptr<Node> node, const T &value) noexcept -> bool {
+    auto del(std::shared_ptr<Node> node, const T &value) noexcept -> bool {
         if (node == nullptr)
             return true;
 
         if (value < node->value_)
-            return remove(node->left_, value);
+            return del(node->left_, value);
         else if (value > node->value_)
-            return remove(node->right_, value);
+            return del(node->right_, value);
 
         else  {
             if (node == root_) {
@@ -340,7 +340,7 @@ auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool{
 
 
 template<typename T>
-auto BinarySearchTree<T>::del(const T& value) noexcept -> bool
+auto BinarySearchTree<T>::remove(const T& value) noexcept -> bool
 {
     if (remove(value, root_))
     {
