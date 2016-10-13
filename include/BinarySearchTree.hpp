@@ -76,7 +76,7 @@ public:
 
     auto find(const T &value) const noexcept -> const std::shared_ptr<T>;
 
-    auto remove(const T &value) noexcept -> bool;
+    auto del(const T &value) noexcept -> bool;
 
     auto remove(std::shared_ptr<Node> node, const T &value) noexcept -> bool {
         if (node == nullptr)
@@ -339,6 +339,17 @@ auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool{
 }
 
 
+template<typename T>
+auto BinarySearchTree<T>::del(const T& value) noexcept -> bool
+{
+    if (remove(value, root_))
+    {
+        size_--;
+        return true;
+    }
+
+    return false;
+}
 
 
 #endif //MAIN_BINARYSEARCHTREE_HPP
