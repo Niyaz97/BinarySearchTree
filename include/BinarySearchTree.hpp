@@ -116,7 +116,6 @@ public:
                 std::shared_ptr<Node> newNode;
                 if (node->left_ && node->right_) {
                     newNode = Leftmost(node->right_);
-                    Leftmost(node->right_)->parent_->left_ = Leftmost(node->right_)->right_;
                     newNode->parent_ = node->parent_;
 
                     if (newNode == node->right_) {
