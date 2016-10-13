@@ -79,79 +79,101 @@ public:
     auto remove(const T &value) noexcept -> bool;
 
     auto remove(std::shared_ptr<Node> node, const T &value) noexcept -> bool {
-
         if (node == nullptr)
-            return false;
+            return true;
 
         if (value < node->value_)
             return remove(node->left_, value);
         else if (value > node->value_)
             return remove(node->right_, value);
+
         else  {
+            if (node == root_) {
+                std::shared_ptr<Node> newNode=Leftmost(node->right_);
+
+                if (Leftmost(node->right_) == node->right_) {
+                    newNode->right_ = node->right_->right_;
+                }
+                else {
+                    newNode->right_ = node->right_;
+                    Leftmost(node->right_)->parent_->left_ = nullptr;
+                }
+                newNode->left_ = node->left_;
+                root_ = newNode;
+                newNode->parent_ = nullptr;
+                node = nullptr;
+                return true;
+            }
 
             if (node->left_ == nullptr && node->right_ == nullptr) {
                 if (node->parent_->left_ == node)
                     node->parent_->left_ = nullptr;
                 else
                     node->parent_->right_ = nullptr;
-                node=nullptr;
+                node = nullptr;
             }
             else {
-                std::shared_ptr<Node> newnode;
-                if(node->left_ && node->right_)
-                {
-                    newnode = Leftmost(node->right_);
-                    newnode->parent_ = node->parent_;
+                std::shared_ptr<Node> newNode;
+                if (node->left_ && node->right_) {
+                    newNode = Leftmost(node->right_);
+                    Leftmost(node->right_)->parent_->left_ = Leftmost(node->right_)->right_;
+                    newNode->parent_ = node->parent_;
 
-                    if (Leftmost(node->right_) == node->right_){
-                        newnode->right_ = node->right_->right_;
+                    if (newNode == node->right_) {
+                        newNode->right_ = node->right_->right_;
                     }
-                    else{
-                        newnode->right_ = node->right_;
+                    else {
+                        newNode->right_ = node->right_;
+
                     }
-                    newnode->left_ = node->left_;
+                    newNode->left_ = node->left_;
 
 
-                    if (node->parent_->right_ = node){
-                        newnode->parent_->right_ = newnode;
+                    if (node != root_) {
+
+                        if (node->parent_->right_ = node) {
+                            newNode->parent_->right_ = newNode;
+                        }
+                        else {
+                            newNode->parent_->left_ = newNode;
+                        }
                     }
-                    else{
-                        newnode->parent_->left_ = newnode;
+                    else {
+                        root_ = newNode;
+                    }
+
+
+                }
+                else {
+                    if (node->right_) {
+                        node->parent_->left_ = node->right_;
+                    }
+                    if (node->left_) {
+                        node->parent_->right_ = node->left_;
                     }
 
                 }
-                else
-                {
-                    if (node->right_){
-                        node->parent_->right_ = node->right_;
-                    }
-                    if (node->left_){
-                        node->parent_->left_ = node->left_;
-                    }
+                node = nullptr;
 
-                }
-                node=nullptr;
             }
         }
     }
-
-        std::shared_ptr<Node> Leftmost(std::shared_ptr<Node> node) {
-            if (node == nullptr)
-                return nullptr;
-            if (node->left_ != nullptr) {
-                return Leftmost(node->left_);
-            }
-            return node;
+    std::shared_ptr<Node> Leftmost(std::shared_ptr<Node> node) {
+        if (node == nullptr)
+            return nullptr;
+        if (node->left_ != nullptr) {
+            return Leftmost(node->left_);
         }
-        std::shared_ptr<Node> Rightmost(std::shared_ptr<Node> node) {
-            if (node == nullptr)
-                return nullptr;
-            if (node->right_ != nullptr) {
-                return Rightmost(node->right_);
-            }
-            return node;
+        return node;
+    }
+    std::shared_ptr<Node> Rightmost(std::shared_ptr<Node> node) {
+        if (node == nullptr)
+            return nullptr;
+        if (node->right_ != nullptr) {
+            return Rightmost(node->right_);
         }
-
+        return node;
+    }
 
 
 
@@ -248,7 +270,7 @@ void BinarySearchTree<T>::symmetric(const std::shared_ptr<Node> node, std::ostre
 
 template<typename T>
 std::ostream& operator << (std::ostream& out, const BinarySearchTree<T>& tree) {
-    tree.symmetric(tree.ReturnRoot(), out);
+    tree.direct(tree.ReturnRoot(), out);
     return out;
 }
 
@@ -288,7 +310,7 @@ template<typename T>
 auto BinarySearchTree<T>::operator=(const BinarySearchTree<T> & tree) -> BinarySearchTree<T>&{
     if (this == &tree)
         return *this;
-    root_=nullptr;
+    root_= nullptr;
     this->root_=tree.root_->copy();
     this->size_=tree.size_;
     return *this;
@@ -299,7 +321,7 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree<T> && tree) -> BinarySearch
 
     if (this == &tree)
         return *this;
-    root_=nullptr;
+    root_== nullptr;
     this->size_= tree.size_;
     this->root_ = tree.root_;
     tree.size_ = 0;
@@ -317,16 +339,6 @@ auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool{
 }
 
 
-template <typename T>
-auto BinarySearchTree<T>::remove(const T &value) noexcept -> bool {
-    bool SearchValue=false;
-    if(root_)
-        SearchValue=BinarySearchTree::remove(root_,value);
-    else
-        return false;
-    if(SearchValue)
-        size_--;
-    return SearchValue;
-}
+
 
 #endif //MAIN_BINARYSEARCHTREE_HPP
