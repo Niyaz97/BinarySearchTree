@@ -10,7 +10,7 @@
            
            WHEN("remove node that hasn't children")
             {
-              bst1.remove(bst1.root_,13);
+              bst1.remove(13);
               THEN("trees must be equal")
                 {
                   REQUIRE(bst1==bst2);
@@ -21,7 +21,7 @@
             bst2 = BinarySearchTree<int> ({ 15,12,10,13,19,18,20});
              WHEN("remove node that has only right child")
             {
-              bst1.remove(bst1.root_,17);
+              bst1.remove(17);
               THEN("trees must be equal")
                 {
                   REQUIRE(bst1==bst2);
@@ -32,7 +32,7 @@
              bst2 = BinarySearchTree<int> ({ 15,17,12,13,19,18,20});
              WHEN("remove node that has only left child")
             {
-               bst1.remove(bst1.root_,10);
+               bst1.remove(10);
               THEN("trees must be equal")
                 {
                   REQUIRE(bst1==bst2);
@@ -43,7 +43,7 @@
             bst2 = BinarySearchTree<int> ({ 15,17,12,10,13,20,18});
              WHEN("remove node that has both children")
             {
-               bst1.remove(bst1.root_,19);
+               bst1.remove(19);
               THEN("trees must be equal")
                 {
                   REQUIRE(bst1==bst2);
@@ -54,7 +54,7 @@
             bst2 = BinarySearchTree<int> ({ 15,17,12,10,13,19,18,20});
              WHEN("remove node that doesn't exist")
             {
-               bst1.remove(bst1.root_,6);
+               bst1.remove(6);
               THEN("trees must be equal")
                 {
                   REQUIRE(bst1==bst2);
@@ -65,7 +65,7 @@
 	          bst2 = BinarySearchTree<int>({20});
              WHEN("remove root")
             {
-               bst1.remove(bst1.root_,12);
+               bst1.remove(12);
               THEN("trees must be equal")
                 {
                   REQUIRE(bst1==bst2);
