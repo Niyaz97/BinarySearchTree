@@ -127,21 +127,12 @@ public:
                     }
                     newNode->left_ = node->left_;
 
-
-                    if (node != root_) {
-
-                        if (node->parent_->right_ = node) {
-                            newNode->parent_->right_ = newNode;
-                        }
-                        else {
-                            newNode->parent_->left_ = newNode;
-                        }
+                    if (node->parent_->right_ = node) {
+                        newNode->parent_->right_ = newNode;
                     }
                     else {
-                        root_ = newNode;
-                    }
-
-
+                        newNode->parent_->left_ = newNode;
+                    }                  
                 }
                 else {
                     if (node->right_) {
