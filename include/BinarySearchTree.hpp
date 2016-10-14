@@ -145,10 +145,10 @@ public:
                 }
                 else {
                     if (node->right_) {
-                        node->parent_->left_ = node->right_;
+                        node->parent_->right_ = node->right_;
                     }
                     if (node->left_) {
-                        node->parent_->right_ = node->left_;
+                        node->parent_->left_ = node->left_;
                     }
 
                 }
