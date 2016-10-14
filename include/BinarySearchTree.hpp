@@ -2,7 +2,6 @@
 #define MAIN_BINARYSEARCHTREE_HPP
 
 
-
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -77,15 +76,17 @@ public:
 
     auto find(const T &value) const noexcept -> const std::shared_ptr<T>;
 
-
-    auto remove(std::shared_ptr<Node> node, const T &value) noexcept -> bool {
+    auto remove(const T& value) noexcept ->bool{
+        return remove_impl(root_,value);
+    }
+    auto remove_impl(std::shared_ptr<Node> node, const T &value) noexcept -> bool {
         if (node == nullptr)
             return true;
 
         if (value < node->value_)
-            return remove(node->left_, value);
+            return remove_impl(node->left_, value);
         else if (value > node->value_)
-            return remove(node->right_, value);
+            return remove_impl(node->right_, value);
 
         else  {
             if (node == root_) {
@@ -127,12 +128,15 @@ public:
                     }
                     newNode->left_ = node->left_;
 
-                    if (node->parent_->right_ = node) {
-                        newNode->parent_->right_ = newNode;
-                    }
-                    else {
-                        newNode->parent_->left_ = newNode;
-                    }                  
+
+
+
+                        if (node->parent_->right_ = node) {
+                            newNode->parent_->right_ = newNode;
+                        }
+                        else {
+                            newNode->parent_->left_ = newNode;
+                        }
                 }
                 else {
                     if (node->right_) {
@@ -327,5 +331,6 @@ auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool{
 
     return equal(root_, tree.root_);
 }
+
 
 #endif //MAIN_BINARYSEARCHTREE_HPP
