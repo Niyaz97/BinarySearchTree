@@ -40,7 +40,7 @@
              }
              
             bst1 = BinarySearchTree<int> ({ 15,17,12,10,13,19,18,20});
-            bst2 = BinarySearchTree<int> ({ 15,17,12,10,13,18,20});
+            bst2 = BinarySearchTree<int> ({ 15,17,12,10,13,20,18});
              WHEN("remove node that has both children")
             {
                bst1.remove(bst1.root_,19);
