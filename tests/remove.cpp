@@ -54,10 +54,9 @@
             bst2 = BinarySearchTree<int> ({ 15,17,12,10,13,19,18,20});
              WHEN("remove node that doesn't exist")
             {
-               bst1.remove(6);
-              THEN("trees must be equal")
+                THEN("throw an exception")
                 {
-                  REQUIRE(bst1==bst2);
+                  REQUIRE_THROW_AS(tree.remove(6), BinarySearchTree<int>::Exceptions);
                 }
              }
         
