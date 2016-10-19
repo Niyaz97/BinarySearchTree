@@ -25,7 +25,7 @@ SCENARIO("if element doesn't exist in tree, throw an exception")
         {
             THEN("throw an exception") 
             {
-                REQUIRE_THROW_AS(tree.find(4), BinarySearchTree<int>::Exceptions);
+                REQUIRE_THROWS_AS(tree.find(4), BinarySearchTree<int>::Exceptions);
             }
         }
     }
