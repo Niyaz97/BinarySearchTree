@@ -10,7 +10,7 @@ SCENARIO("if element already exists, throw an exception")
         {
             THEN("throw an exception")
             {
-                REQUIRE_THROW_AS(tree.insert(1), BinarySearchTree<int>::Exceptions);
+                REQUIRE_THROWS_AS(tree.insert(1), BinarySearchTree<int>::Exceptions);
             }
         }   
     }    
