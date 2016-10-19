@@ -56,7 +56,7 @@
             {
                 THEN("throw an exception")
                 {
-                  REQUIRE_THROWS_AS(tree.remove(6), BinarySearchTree<int>::Exceptions);
+                  REQUIRE_THROWS_AS(bst1.remove(6), BinarySearchTree<int>::Exceptions);
                 }
              }
         
