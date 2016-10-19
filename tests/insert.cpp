@@ -15,6 +15,7 @@ SCENARIO("if element already exists, throw an exception")
         }   
     }    
 }
+
 SCENARIO("if element don't exists, return true")
 {
     GIVEN("tree")
@@ -29,6 +30,7 @@ SCENARIO("if element don't exists, return true")
         }   
     }    
 }
+
 SCENARIO("if inserting element < root->value, add it to the left side of root")
 {
     GIVEN("tree")
@@ -45,6 +47,7 @@ SCENARIO("if inserting element < root->value, add it to the left side of root")
         }
     }   
 }
+
 SCENARIO("if inserting element > root->value, add it to the right side of root")
 {
     GIVEN("tree")
@@ -61,22 +64,7 @@ SCENARIO("if inserting element > root->value, add it to the right side of root")
         }
     }   
 }
-SCENARIO("if element already exists, size must stay constant")
-{
-    GIVEN("tree")
-    {
-        BinarySearchTree<int> tree{1, 3, 5, 7};
-        size_t size = tree.size();
-        WHEN("insert element")
-        {
-            tree.insert(7);
-            THEN("size hasn't changed")
-            {
-                REQUIRE(tree.size() == size);
-            }
-        }
-    }
-}
+
 SCENARIO("if element doesn't exist, size must increase")
 {
     GIVEN("tree")
