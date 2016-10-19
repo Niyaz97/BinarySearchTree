@@ -1,23 +1,23 @@
 #include "../include/BinarySearchTree.hpp"
 #include "catch.hpp"
 
-SCENARIO("if element already exists => return false")
+SCENARIO("if element already exists, throw an exception")
 {
-    GIVEN("some tree")
+    GIVEN("tree")
     {
         BinarySearchTree<int> tree{1, 3, 5, 7};
         WHEN("insert element")
         {
-            THEN("elements can't be repeated")
+            THEN("throw an exception")
             {
-                REQUIRE(!tree.insert(1));
+                REQUIRE_THROW_AS(tree.insert(1), BinarySearchTree<int>::Exceptions);
             }
         }   
     }    
 }
-SCENARIO("if element don't exists => return true")
+SCENARIO("if element don't exists, return true")
 {
-    GIVEN("some tree")
+    GIVEN("tree")
     {
         BinarySearchTree<int> tree{1, 3, 5, 7};
         WHEN("insert element")
@@ -31,7 +31,7 @@ SCENARIO("if element don't exists => return true")
 }
 SCENARIO("if inserting element < root->value, add it to the left side of root")
 {
-    GIVEN("some tree")
+    GIVEN("tree")
     {
         BinarySearchTree<int> tree{3, 5};
         BinarySearchTree<int> tree2{3, 1, 5};
@@ -47,7 +47,7 @@ SCENARIO("if inserting element < root->value, add it to the left side of root")
 }
 SCENARIO("if inserting element > root->value, add it to the right side of root")
 {
-    GIVEN("some tree")
+    GIVEN("tree")
     {
         BinarySearchTree<int> tree{3, 1};
         BinarySearchTree<int> tree2{3, 1, 5};
@@ -63,7 +63,7 @@ SCENARIO("if inserting element > root->value, add it to the right side of root")
 }
 SCENARIO("if element already exists, size must stay constant")
 {
-    GIVEN("some tree")
+    GIVEN("tree")
     {
         BinarySearchTree<int> tree{1, 3, 5, 7};
         size_t size = tree.size();
@@ -79,7 +79,7 @@ SCENARIO("if element already exists, size must stay constant")
 }
 SCENARIO("if element doesn't exist, size must increase")
 {
-    GIVEN("some tree")
+    GIVEN("tree")
     {
         BinarySearchTree<int> tree{1, 3, 5, 7};
         size_t size = tree.size();
