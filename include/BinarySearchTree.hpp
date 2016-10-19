@@ -17,6 +17,12 @@ template <typename T> auto operator << (std::ostream& out, const BinarySearchTre
 template <typename T>
 class BinarySearchTree {
 public:
+
+    class Exceptions: public std::logic_error{
+    public:
+        Exceptions(const std::string& data ) : logic_error(data){}
+    };
+
     class Node {
     public:
         std::shared_ptr<Node> left_;
@@ -72,16 +78,18 @@ public:
 
     auto size() const noexcept -> size_t;
 
-    auto insert(const T &value) noexcept -> bool;
+    auto insert(const T &value) -> bool;
 
-    auto find(const T &value) const noexcept -> const std::shared_ptr<T>;
+    auto find(const T &value) const  -> const std::shared_ptr<T>;
 
-    auto remove(const T& value) noexcept ->bool{
-        return remove_impl(root_,value);
+    auto remove(const T& value) -> bool{
+        if(size_==0) throw Exceptions("The Tree is empty");
+        else return remove_impl(root_,value);
     }
-    auto remove_impl(std::shared_ptr<Node> node, const T &value) noexcept -> bool {
+
+    auto remove_impl(std::shared_ptr<Node> node, const T &value) -> bool {
         if (node == nullptr)
-            return true;
+            throw Exceptions("This node doesn't exist");
 
         if (value < node->value_)
             return remove_impl(node->left_, value);
@@ -198,7 +206,7 @@ auto BinarySearchTree<T>::size() const noexcept -> size_t {
 }
 
 template<typename T>
-auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool{
+auto BinarySearchTree<T>::insert(const T& value)  -> bool{
 
     if (root_== nullptr) {
         root_ = std::make_shared<Node>(value);
@@ -213,8 +221,7 @@ auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool{
             node = parent->left_;
         else if (value > parent->value_)
             node = parent->right_;
-        else
-            return false;
+        else throw Exceptions("This node is already exists");
     }
 
     if (value < parent->value_)
@@ -227,7 +234,9 @@ auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool{
 }
 
 template<typename T>
-auto BinarySearchTree<T>::find(const T& value) const noexcept -> const std::shared_ptr<T>{
+auto BinarySearchTree<T>::find(const T& value) const -> const std::shared_ptr<T>{
+    if(size_==0) throw Exceptions("Tree is empty");
+
     auto node=root_;
     while(node){
         if(value< node->value_)
@@ -238,7 +247,8 @@ auto BinarySearchTree<T>::find(const T& value) const noexcept -> const std::shar
             return std::make_shared<T>(node->value_);
 
     }
-    return nullptr;
+
+    throw Exceptions("The node cannot be found");
 }
 
 template<typename T>
@@ -331,6 +341,7 @@ auto BinarySearchTree<T>::operator == (const BinarySearchTree<T>& tree) -> bool{
 
     return equal(root_, tree.root_);
 }
+
 
 
 #endif //MAIN_BINARYSEARCHTREE_HPP
