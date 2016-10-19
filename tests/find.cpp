@@ -5,27 +5,27 @@ SCENARIO("if element exists in tree, return pointer to this element")
 {
     GIVEN("tree") 
     {
-        BinarySearchTree<int> tree{1, 3, 5};
+        BinarySearchTree<int> tree{5, 6, 7};
         WHEN("find") 
         {
             THEN("return poinet to this element") 
             {
-                REQUIRE(*(tree.find(3)) == 3);
+                REQUIRE(*(tree.find(5)) == 5);
             }
         }
     }
 }
 
-SCENARIO("if element doesn't exist in tree, return nullptr") 
+SCENARIO("if element doesn't exist in tree, throw an exception") 
 {
     GIVEN("tree") 
     {
-        BinarySearchTree<int> tree{1, 3, 5};
+        BinarySearchTree<int> tree{5, 6, 7};
         WHEN("find") 
         {
-            THEN("return nullptr") 
+            THEN("throw an exception") 
             {
-                REQUIRE(tree.find(2) == nullptr);
+                REQUIRE_THROW_AS(tree.find(4), BinarySearchTree<int>::Exceptions);
             }
         }
     }
