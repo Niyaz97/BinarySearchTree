@@ -8,4 +8,4 @@ set(SOURCE_FILES examples/main.cpp)
 add_executable(BinarySearchTree ${SOURCE_FILES})
 add_executable(Tests ${TESTS_SOURCE} tests/catch.hpp tests/size.cpp tests/insert.cpp tests/find.cpp tests/main.cpp tests/remove.cpp)
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR /include} DESTINATION include)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include DESTINATION include)
