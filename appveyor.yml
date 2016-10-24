@@ -6,6 +6,7 @@ environment:
     matrix:
         - VSVER: 14
 
+
 before_build:
     - ps: >-
         If ($env:Platform -Match "x86") {
