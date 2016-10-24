@@ -4,7 +4,10 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <memory>
+#include <cstring>
+#include <exception>
 template <typename T>
 class BinarySearchTree;
 
@@ -17,10 +20,21 @@ template <typename T> auto operator << (std::ostream& out, const BinarySearchTre
 template <typename T>
 class BinarySearchTree {
 public:
-    
+
     class except: public std::logic_error{
+        T value;
     public:
-        except(const std::string& data, T ) : logic_error(data){}
+        except(const char * data_, const T& param):std::logic_error(data_), value(param){}
+
+        const char * what() const noexcept {
+            return std::logic_error::what();
+        }
+
+        const T& getParam() const noexcept {
+            return value;
+        }
+
+
     };
 
     class Node {
